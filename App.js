@@ -1,6 +1,5 @@
-import React from 'react'; 
-import styled from 'styled-components/native'
-import { Text, View } from 'react-native';
+import React, {useState} from 'react';
+import styled from 'styled-components/native';
 
 const Tela = styled.View`
   flex : 1;
@@ -39,17 +38,25 @@ const ResultadoTexto = styled.Text`
 `
 
 export default function App() {
+  const [peso, alteraPeso] = useState ('60');
+  const [altura, alteraAltura] = useState ('1.73');
+  const [imc, alteraIMC] = useState(0);
+  const [categoria, alteraCategoria] = useState ('Obesidade');  
+  const calcularIMC = () => {
+    const indice = (parseFloat(peso) / ( parseFloat (altura) * parseFloat(altura) ) );
+    alteraIMC(indice.toFixed(1));
+  };
   return (
     <Tela >
       <Titulo>Calculadora de IMC</Titulo>
-      <Input placeholder="Peso" keyboardType="Numeric"/>
-      <Input placeholder="Altura" keyboardType="Numeric"/>
+      <Input placeholder="Peso" keyboardType="Numeric" value = {peso} onChangeText = { (p) => {alteraPeso(p)} }/>
+      <Input placeholder="Altura" keyboardType="Numeric" value = {altura} onChangeText = { (a) => {alteraAltura(a)} }/>
       <CalcularView>
-        <CalcularBotao title="Calcular" onPress={ () => {} } />
+        <CalcularBotao title="Calcular" onPress={ calcularIMC } />
       </CalcularView>
       <ResultadoView>
-        <ResultadoTexto>30</ResultadoTexto>
-        <ResultadoTexto>Normal</ResultadoTexto>
+        <ResultadoTexto>{imc}</ResultadoTexto>
+        <ResultadoTexto>{categoria}</ResultadoTexto>
       </ResultadoView>
     </Tela>
   );
